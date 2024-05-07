@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createSignUp } from "../Services/SignUpServices";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
-    password: "",
-    confirmPassword: "",
+    password: "", // Add password field to form data
   });
+
   const [error, setError] = useState("");
-  const [isSignedUp, setIsSignedUp] = useState(false); 
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,45 +19,60 @@ const Signup = () => {
       ...formData,
       [name]: value,
     });
-   
-    setIsSignedUp(false);
     setError("");
   };
 
   const handleClear = () => {
     setFormData({
-      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      password: "",
-      confirmPassword: "",
+      password: "", // Clear password field
     });
     setError("");
-    setIsSignedUp(false); 
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
-      setError("Password and confirm password do not match");
-      setIsSignedUp(false);
+    const { firstName, lastName, email, password } = formData;
+
+    // Field validation
+    if (!firstName.trim() || !lastName.trim() || !email.trim() || !password.trim()) {
+      setError("All fields are required.");
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Please provide a valid email address.");
+      return;
+    }
+
+    // Password strength check
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordRegex.test(password)) {
+      setError("Please provide a strong password. It should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
       return;
     }
 
     try {
-      const signupData = {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-        confirmPassword: formData.confirmPassword,
-      };
-      const response = await createSignUp(signupData);
-      console.log(response.data);
-      setIsSignedUp(true); 
-      setError(""); 
+      // Your signup service function to create the signup
+      await createSignUp({ firstName, lastName, email, password });
+
+      // Clear form data on successful signup
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+      });
+
+      setError("");
+      navigate("/login");
     } catch (error) {
       console.error("Error creating signup:", error);
-      setError("An error occurred during sign up."); 
-      setIsSignedUp(false); 
+      setError("An error occurred during sign up. Please provide a correct email and password.");
     }
   };
 
@@ -63,10 +80,15 @@ const Signup = () => {
     <div className="text-center" style={{ marginBottom: '20px' }}>
       <h5>Signup Here</h5>
       <form onSubmit={handleSubmit}>
-        {/* Username input */}
+        {/* First Name input */}
         <div style={{ marginBottom: "10px" }}>
-          <label style={{ display: 'inline-block', width: '100px', fontWeight: 'bold', textAlign: 'left' }}>Username:</label>
-          <input type="text" id="username" name="username" value={formData.username} onChange={handleInputChange} required style={{ width: '300px', marginLeft: '10px' }}/>
+          <label style={{ display: 'inline-block', width: '100px', fontWeight: 'bold', textAlign: 'left' }}>First Name:</label>
+          <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleInputChange} required style={{ width: '300px', marginLeft: '10px' }}/>
+        </div>
+        {/* Last Name input */}
+        <div style={{ marginBottom: "10px" }}>
+          <label style={{ display: 'inline-block', width: '100px', fontWeight: 'bold', textAlign: 'left' }}>Last Name:</label>
+          <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleInputChange} required style={{ width: '300px', marginLeft: '10px' }}/>
         </div>
         {/* Email input */}
         <div style={{ marginBottom: "10px" }}>
@@ -78,24 +100,16 @@ const Signup = () => {
           <label style={{ display: 'inline-block', width: '100px', fontWeight: 'bold', textAlign: 'left' }}>Password:</label>
           <input type="password" id="password" name="password" value={formData.password} onChange={handleInputChange} required style={{ width: '300px', marginLeft: '10px' }}/>
         </div>
-        {/* Confirm Password input */}
-        <div style={{ marginBottom: "10px" }}>
-          <label style={{ display: 'inline-block', width: '100px', fontWeight: 'bold', textAlign: 'left' }}>Confirm Password:</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} required style={{ width: '300px', marginLeft: '10px' }}/>
-        </div>
         {/* Submit and Clear buttons */}
         <div style={{ display: "flex", justifyContent: "center" }}>
           <button type="submit" style={{ backgroundColor: "blue", color: "white", marginRight: "5px", padding: "5px 10px", border: "none" }}>Submit</button>
           <button type="button" onClick={handleClear} style={{ backgroundColor: "red", color: "white", padding: "5px 10px", border: "none" }}>Clear</button>
         </div>
-        {/* Error and Success Messages */}
+        {/* Error message */}
         {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
-        {isSignedUp && <p style={{ color: "green", marginTop: "10px" }}>You have signed up successfully!</p>}
       </form>
     </div>
   );
 };
 
 export default Signup;
-
-

@@ -1,0 +1,29 @@
+.bill-container {
+    border: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .bill-info-item {
+    margin-bottom: 10px;
+  }
+  
+  .bill-items {
+    margin-top: 20px;
+  }
+  
+  .bill-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .bill-table th, .bill-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+  
+  .total-bill-amount {
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  

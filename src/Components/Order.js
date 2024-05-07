@@ -1,17 +1,38 @@
-// Order.js
-
-import React, { useState, useEffect, useCallback } from 'react';
-import { getAllItems, deleteItemById } from '../Services/FoodItemServices';
+import React, { useState, useEffect } from 'react';
+import { getAllItems } from '../Services/FoodItemServices';
 import { addOrder } from '../Services/OrdersServices';
+import { useNavigate } from 'react-router-dom';
 
 const Order = () => {
   const [foodItems, setFoodItems] = useState([]);
-  const [orderId, setOrderId] = useState('');
-  const [orderItems, setOrderItems] = useState([]);
-  const [totalBill, setTotalBill] = useState(0);
-   // eslint-disable-next-line
-  const [deletedFoodItem, setDeletedFoodItem] = useState(null);
+  const [orderItems, setOrderItems] = useState({});
+  const [totalBillAmount, setTotalBillAmount] = useState(0);
+  const [date, setDate] = useState('');
+  const [customerName, setCustomerName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [customerNameError, setCustomerNameError] = useState('');
+  const [mobileNumberError, setMobileNumberError] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  // Function to get current date in YYYY-MM-DD format
+  const getCurrentDate = () => {
+    const today = new Date();
+    const formattedDate = today.toISOString().substr(0, 10);
+    return formattedDate;
+  };
+
+  useEffect(() => {
+    fetchFoodItems();
+    // Set current date when component mounts
+    setDate(getCurrentDate());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    calculateTotalAmount(); // Call calculateTotalAmount whenever orderItems changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderItems]);
 
   const fetchFoodItems = async () => {
     try {
@@ -28,7 +49,7 @@ const Order = () => {
     if (item) {
       setOrderItems(prevOrderItems => ({
         ...prevOrderItems,
-        [itemId]: { ...item, count: (prevOrderItems[itemId]?.count || 0) + 1 }
+        [itemId]: { ...item, quantity: (prevOrderItems[itemId]?.quantity || 0) + 1 }
       }));
     }
   };
@@ -36,55 +57,82 @@ const Order = () => {
   const handleRemoveFromOrder = (itemId) => {
     setOrderItems(prevOrderItems => {
       const updatedItems = { ...prevOrderItems };
-      updatedItems[itemId].count = Math.max((updatedItems[itemId]?.count || 0) - 1, 0);
+      if (updatedItems[itemId]) {
+        updatedItems[itemId] = {
+          ...updatedItems[itemId],
+          quantity: Math.max(updatedItems[itemId].quantity - 1, 0)
+        };
+      }
       return updatedItems;
     });
   };
 
-  const handleDelete = async (foodItemId) => {
-    try {
-      await deleteItemById(foodItemId);
-      setDeletedFoodItem(foodItemId);
-      setError(null);
-      setFoodItems(foodItems.filter(item => item.itemId !== foodItemId));
-    } catch (error) {
-      setError(error);
-    }
-  };
-
-  const generateBill = useCallback(() => {
-    let bill = 0;
+  const calculateTotalAmount = () => {
+    let total = 0;
     Object.values(orderItems).forEach(item => {
-      if (item) {
-        bill += item.totalCost * item.count;
-      }
+      total += item.priceWithGST * item.quantity;
     });
-    setTotalBill(bill);
-  }, [orderItems]);
-
-  useEffect(() => {
-    fetchFoodItems();
-  }, []);
-
-  useEffect(() => {
-    generateBill();
-  }, [generateBill]);
+    setTotalBillAmount(total);
+  };
 
   const handlePlaceOrder = async () => {
     try {
-      const orderData = {
-        orderId: orderId,
-        items: Object.values(orderItems)
+      const validOrderItems = Object.values(orderItems).filter(item => item.quantity > 0);
+
+      if (!customerName.trim()) {
+        setCustomerNameError('Customer Name is required');
+        return;
+      } else {
+        setCustomerNameError('');
+      }
+
+      if (!mobileNumber.trim()) {
+        setMobileNumberError('Mobile Number is required');
+        return;
+      } else {
+        setMobileNumberError('');
+      }
+
+      const orderData = validOrderItems.map(item => ({
+        itemId: item.itemId,
+        itemName: item.itemName,
+        price: item.price,
+        centralGST: item.centralGST,
+        stateGST: item.stateGST,
+        totalGST: item.totalGST,
+        priceWithGST: item.priceWithGST,
+        description: item.description,
+        quantity: item.quantity
+      }));
+
+      const newOrder = {
+        orderedItems: orderData,
+        totalBillAmount: totalBillAmount,
+        orderDate: date,
+        mobileNumber: mobileNumber,
+        customerName: customerName
       };
-      console.log("orderItems", orderItems);
-      console.log('orderData :', orderData);
-      const response = await addOrder(orderData);
-      
-      console.log('Order placed successfully:', response);
-  
-      setOrderId('');
-      setOrderItems([]);
-      setTotalBill(0);
+
+      console.log('Order Data:', newOrder);
+
+      const response = await addOrder(newOrder);
+
+      console.log('Order placed successfully:', response.data);
+      navigate('/bill', {
+        state: {
+          customerName,
+          mobileNumber,
+          orderId: response.data.orderId, // Assuming the order ID is returned in the response from the server
+          orderDate: date,
+          orderedItems: validOrderItems,
+          totalBillAmount
+        }
+      }); // Use navigate function to navigate to the '/bill' route
+
+      setOrderItems({});
+      setCustomerName('');
+      setMobileNumber('');
+      setError(null);
     } catch (error) {
       console.error('Error placing order:', error);
       setError(error.response?.data?.message || 'An error occurred while placing the order');
@@ -93,52 +141,59 @@ const Order = () => {
 
   return (
     <div className='container'>
-      <div className="text-center">
-        <h3>Order ID:</h3>
-        <input
-          type="text"
-          value={orderId}
-          onChange={(e) => setOrderId(e.target.value)}
-          placeholder="Enter Order ID"
-        />
-      </div>
       <h3>Available Items</h3>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "10px" }}>
+        <div>
+          <label style={{fontWeight: 'bold'}}>Date:</label>
+          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+        </div>
+        <div>
+          <label style={{fontWeight: 'bold'}}>Customer Name:</label>
+          <input type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
+          {customerNameError && <div className="text-danger">{customerNameError}</div>}
+        </div>
+        <div>
+          <label style={{fontWeight: 'bold'}}>Mobile Number:</label>
+          <input type="text" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
+          {mobileNumberError && <div className="text-danger">{mobileNumberError}</div>}
+        </div>
+      </div>
       <table className='table table-striped table-bordered'>
         <thead>
           <tr>
             <th>Item ID</th>
             <th>Item Name</th>
-            <th>Raw Cost</th>
+            <th>Price</th>
             <th>Central GST</th>
             <th>State GST</th>
             <th>Total GST</th>
-            <th>Total Cost</th>
+            <th>Price with GST</th>
             <th>Description</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {foodItems.map((foodItem, index) => (
+          {foodItems.map((foodItem) => (
             <tr key={foodItem.itemId}>
               <td>{foodItem.itemId}</td>
               <td>{foodItem.itemName}</td>
-              <td>{foodItem.rawCost}</td>
+              <td>{foodItem.price}</td>
               <td>{foodItem.centralGST}</td>
               <td>{foodItem.stateGST}</td>
               <td>{foodItem.totalGST}</td>
-              <td>{foodItem.totalCost}</td>
+              <td>{foodItem.priceWithGST}</td>
               <td>{foodItem.description}</td>
+
               <td>
-                {orderItems[foodItem.itemId] && orderItems[foodItem.itemId].count > 0 ? (
+                {orderItems[foodItem.itemId] && orderItems[foodItem.itemId].quantity > 0 ? (
                   <div className="btn-group">
                     <button className="btn btn-sm btn-success" onClick={() => handleRemoveFromOrder(foodItem.itemId)}>-</button>
-                    <span className="btn btn-sm btn-light">{orderItems[foodItem.itemId].count}</span>
+                    <span className="btn btn-sm btn-light">{orderItems[foodItem.itemId].quantity}</span>
                     <button className="btn btn-sm btn-success" onClick={() => handleAddToOrder(foodItem.itemId)}>+</button>
                   </div>
                 ) : (
                   <button className="btn btn-primary" onClick={() => handleAddToOrder(foodItem.itemId)} style={{ marginRight: '10px' }}>Add</button>
                 )}
-                <button className="btn btn-danger" onClick={() => handleDelete(foodItem.itemId)}>Delete</button>
               </td>
             </tr>
           ))}
@@ -149,28 +204,19 @@ const Order = () => {
           Place Order
         </button>
       </div>
-      <div className="text-center mt-3">
-        <h6>Total Bill: {totalBill}</h6>
-      </div>
       {error && (
         <div className="text-danger">
-          {error.response && error.response.status === 404 ?
-            `Food item not found` :
-            error.message
-          }
+          {error}
         </div>
       )}
+      <div>
+        <h5>Total Bill Amount: {totalBillAmount}</h5>
+      </div>
     </div>
   );
 };
 
 export default Order;
-
-
-
-
-
-
 
 
 
