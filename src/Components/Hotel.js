@@ -35,14 +35,12 @@ const Hotel = () => {
       <h5 className="mt-3 mb-4">Bill Details</h5>
       <div className="row mb-3">
         <div className="col-md-6">
-          {/* <p><strong>Bill ID:</strong> {billId}</p>
-          <p><strong>Order ID:</strong> {billDetails.orderId}</p>
-          <p><strong>Order Date:</strong> {new Date(billDetails.orderDate).toLocaleDateString()}</p> */}
+       
         </div>
       </div>
       <div className="row">
         <div className="col">
-          {/* <h6 className="mb-3">Ordered Items:</h6> */}
+          
           <table className="table">
             <thead className="table-dark">
               <tr>

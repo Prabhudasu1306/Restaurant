@@ -15,7 +15,7 @@ const Order = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-  // Function to get current date in YYYY-MM-DD format
+
   const getCurrentDate = () => {
     const today = new Date();
     const formattedDate = today.toISOString().substr(0, 10);
@@ -24,13 +24,13 @@ const Order = () => {
 
   useEffect(() => {
     fetchFoodItems();
-    // Set current date when component mounts
+    
     setDate(getCurrentDate());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    calculateTotalAmount(); // Call calculateTotalAmount whenever orderItems changes
+    calculateTotalAmount(); 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderItems]);
 
