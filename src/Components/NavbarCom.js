@@ -10,6 +10,9 @@ import Order from './Order';
 import Bill from './Bill';
 import BillDetails from './BillDetails';
 import Hotel from './Hotel';
+import Export from './Export';
+
+import FileUpload from './FileUpload';
 
 export default class NavbarCom extends Component {
   render() {
@@ -28,6 +31,9 @@ export default class NavbarCom extends Component {
                   <Nav.Link as={Link} to="/bill">Bill</Nav.Link>
                   <Nav.Link as={Link} to="/billdetails">Bill Details</Nav.Link>
                   <Nav.Link as={Link} to="/hotel">Hotel</Nav.Link>
+                  <Nav.Link as={Link} to="/Export">Export</Nav.Link>
+                  
+                  <Nav.Link as={Link} to="/FileUpload">FileUpload</Nav.Link>
                 </Nav>
                 <Nav>
                   <Nav.Link as={Link} to="/login">Login</Nav.Link>
@@ -45,6 +51,9 @@ export default class NavbarCom extends Component {
             <Route path="/bill" element={<Bill />} />
             <Route path="/billdetails" element={<BillDetails />} />
             <Route path="/hotel/:billId" element={<Hotel />} />
+            <Route path="/Export" element={<Export />} />
+            
+            <Route path="/FileUpload" element={<FileUpload />} />
           </Routes>
         </div>
       </Router>

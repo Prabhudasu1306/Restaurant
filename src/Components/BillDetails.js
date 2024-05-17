@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { getAllOrders } from '../Services/OrdersServices';
@@ -17,7 +16,6 @@ const BillDetails = () => {
         const billsResponse = await getAllBills();
         const billsData = billsResponse.data;
 
-      
         const mappedBillDetails = billsData.map(bill => {
           const correspondingOrder = ordersData.find(order => order.orderId === bill.orderId);
           return {
@@ -63,8 +61,8 @@ const BillDetails = () => {
           {billDetails.map((bill, index) => (
             <tr key={bill.billId}>
               <td>{index + 1}</td>
-              <td><Link to={`/hotel/${bill.billId}`}>Bill ID: {bill.billId}</Link></td>
-              <td>{bill.orderId}</td>
+              <td><Link to={`/hotel/${bill.billId}`}> KLN-B-{index + 1}</Link></td>
+              <td>KLN-O-{bill.orderId}</td>
               <td>{bill.customerName}</td>
               <td>{bill.mobileNumber}</td>
             </tr>
@@ -76,6 +74,8 @@ const BillDetails = () => {
 };
 
 export default BillDetails;
+
+
 
 
 

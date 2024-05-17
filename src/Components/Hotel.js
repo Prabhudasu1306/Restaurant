@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getBillById } from '../Services/BillServices';
-import './Hotel.css';
+
 
 const Hotel = () => {
   const { billId } = useParams();
@@ -45,8 +45,7 @@ const Hotel = () => {
             <thead className="table-dark">
               <tr>
                 <th>SNo</th>
-                <th>Bill ID</th>
-                <th>Order ID</th>
+               
                 <th>Item Name</th>
                 <th>Quantity</th>
                 <th>State GST</th>
@@ -60,8 +59,7 @@ const Hotel = () => {
               {billDetails.orderedItems.map((item, index) => (
                 <tr key={index}>
                   <td>{index + 1}</td>
-                  <td>{billId}</td>
-                  <td>{billDetails.orderId}</td>
+                 
                   <td>{item.itemName}</td>
                   <td>{item.quantity}</td>
                   <td>{item.stateGST}</td>
