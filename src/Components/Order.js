@@ -122,13 +122,12 @@ const Order = () => {
         state: {
           customerName,
           mobileNumber,
-          orderId: response.data.orderId, // Assuming the order ID is returned in the response from the server
+          orderId: response.data.orderId, 
           orderDate: date,
           orderedItems: validOrderItems,
           totalBillAmount
         }
-      }); // Use navigate function to navigate to the '/bill' route
-
+      }); 
       setOrderItems({});
       setCustomerName('');
       setMobileNumber('');

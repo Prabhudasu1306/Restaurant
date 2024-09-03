@@ -1,6 +1,11 @@
+
 import React, { useState } from "react";
 import { getAllSignUp } from "../Services/SignUpServices";
-import {Link,useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; 
+import KLN1 from '../Images/KLN1.jpeg';
+import KLN5 from '../Images/KLN5.jpeg';
+import KLN from '../Images/KLN.jpeg';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +13,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { logIn } = useAuth(); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,7 +30,8 @@ const Login = () => {
       );
 
       if (matchedSignUp) {
-        setMessage();
+        setMessage("");
+        logIn(matchedSignUp.firstName); 
         navigate("/home");
       } else {
         setMessage("Incorrect email or password.");
@@ -44,29 +51,65 @@ const Login = () => {
   };
 
   return (
-    <div className="text-center" style={{ marginBottom: "20px" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div style={{ marginBottom: "10px" }}>
-          <label style={{display: "inline-block",width: "100px",fontWeight: "bold",textAlign: "left",}}>Email</label>
-          <input type="email" value={email} onChange={(e) => {setEmail(e.target.value);setMessage("");}}required style={{width: "300px",marginLeft: "30px",boxSizing: "border-box",}}/>
+    <div className="page-container">
+      <div className="login-container">
+        <h2>Login</h2>
+        <form onSubmit={handleLogin}>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setMessage("");
+              }}
+              required
+            />
+          </div>
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setMessage("");
+              }}
+              required
+            />
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <button
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
+            </button>
+            <button
+              type="button"
+              onClick={handleClear}
+            >
+              Clear
+            </button>
+          </div>
+          {message && <p>{message}</p>}
+          <p>New member? <Link to="/signup">Signup</Link></p>
+        </form>
+      </div>
+      <div className="image-container">
+        <div className="image-container-inner">
+          <img src={KLN5} alt="KLN5" />
+          <img src={KLN1} alt="KLN1" />
+          <img src={KLN} alt="KLN" />
         </div>
-        <div style={{ marginBottom: "10px" }}>
-          <label style={{ display: "inline-block",width: "100px",fontWeight: "bold",textAlign: "left",}}>Password</label>
-          <input type="password" value={password} onChange={(e) => { setPassword(e.target.value);setMessage("");}} required style={{width: "300px",marginLeft: "30px",boxSizing: "border-box",}}/>
-        </div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <button style={{backgroundColor: "blue",color: "white",marginRight: "5px",padding: "5px 10px",border: "none",fontSize: "14px",}}type="submit"disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-          </button>
-          <button type="button" style={{backgroundColor: "red",color: "white",marginRight: "5px",padding: "5px 10px",border: "none",fontSize: "14px",}}onClick={handleClear}>Clear</button>
-        </div>
-      </form>
-      {message && <p>{message}</p>}
-      <p>New member? <Link to="/signup">Signup</Link></p>
+      </div>
     </div>
   );
 };
 
-
 export default Login;
+
+
+
+

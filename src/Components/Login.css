@@ -1,0 +1,125 @@
+/* Page Container */
+.page-container {
+  display: flex;
+  height: 100vh;
+  padding: 20px;
+  align-items: center; /* Center content vertically */
+  justify-content: space-between; /* Space between the form and image container */
+}
+
+/* Login Container */
+.login-container {
+  width: 500px;
+  margin-right: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-container form div {
+  margin-bottom: 15px;
+}
+
+.login-container label {
+  display: inline-block;
+  width: 100px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.login-container input {
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.login-container button {
+  background-color: blue;
+  color: white;
+  margin-right: 10px; /* Adjusted margin */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-container button:last-child {
+  background-color: red;
+  margin-right: 0;
+}
+
+.login-container button:hover {
+  opacity: 0.8;
+}
+
+.login-container p {
+  color: red;
+  margin-top: 10px;
+}
+
+.login-container p a {
+  color: blue;
+  text-decoration: none;
+}
+
+.login-container p a:hover {
+  text-decoration: underline;
+}
+
+/* Image Container */
+.image-container {
+  flex: 1;
+  overflow: hidden; /* Ensures images do not scroll out of bounds */
+  position: relative;
+  width: 500px; /* Adjust width as needed */
+  height: 700px; /* Adjust height as needed */
+}
+
+/* Image Container Inner */
+.image-container-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300%; /* Total height as a percentage relative to the number of images */
+  display: flex;
+  flex-direction: column; /* Stack images vertically */
+  animation: scroll-up 15s linear infinite; /* Adjust duration as needed */
+}
+
+/* Image Styling */
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ensures images are fully visible */
+  object-position: center; /* Centers the image within the container */
+}
+
+/* Scrolling Animation */
+@keyframes scroll-up {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-66.67%); /* Adjust based on the number of images */
+  }
+}
+
