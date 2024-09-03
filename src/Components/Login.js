@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { getAllSignUp } from "../Services/SignUpServices";
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; 
+import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
+import "./Login.css";
 import KLN1 from '../Images/KLN1.jpeg';
 import KLN5 from '../Images/KLN5.jpeg';
 import KLN from '../Images/KLN.jpeg';
