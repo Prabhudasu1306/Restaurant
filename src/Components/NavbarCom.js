@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
+import './Logout.css';  // Corrected CSS import
 import { useAuth } from '../context/AuthContext';
 import Home from './Home';
 import Item from './Item';
@@ -22,6 +23,16 @@ const NavbarCom = () => {
     navigate('/signup'); 
   };
 
+  const getInitials = (name) => {
+    if (!name) return ''; 
+
+    const nameParts = name.split(' ');
+    const firstNameInitial = nameParts[0]?.charAt(0) || ''; 
+    const lastNameInitial = nameParts[1]?.charAt(0) || ''; 
+
+    return `${firstNameInitial}${lastNameInitial}`.toUpperCase(); 
+  };
+
   return (
     <div>
       <Navbar bg="warning" variant="purple" expand="lg">
@@ -38,7 +49,11 @@ const NavbarCom = () => {
             </Nav>
             <Nav>
               {user ? (
-                <NavDropdown title={user}>
+                <NavDropdown title={
+                  <div className="user-avatar">
+                    {getInitials(user)}
+                  </div>
+                }>
                   <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
                 </NavDropdown>
               ) : (
@@ -68,4 +83,3 @@ const NavbarCom = () => {
 };
 
 export default NavbarCom;
-
