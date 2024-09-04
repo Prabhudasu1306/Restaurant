@@ -1,16 +1,18 @@
 import React from 'react';
-import KLN1 from '../Images/KLN1.jpeg'; // Ensure the path is correct
+import KLN1 from '../Images/KLN1.jpeg'; 
+
 
 const Home = () => {
   return (
-    <div>
+    <div className="home-container">
       <h4>Welcome to KLN Hotels</h4>
-      <img src={KLN1} alt="KLN Hotel" /> {/* Use the imported image */}
+      <img src={KLN1} alt="KLN Hotel" className="home-image" /> 
     </div>
   );
 }
 
 export default Home;
+
 
 
 

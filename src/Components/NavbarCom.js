@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
-import './Logout.css';  // Corrected CSS import
+import './Logout.css';  
 import { useAuth } from '../context/AuthContext';
 import Home from './Home';
 import Item from './Item';

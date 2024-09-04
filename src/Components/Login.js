@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { getAllSignUp } from "../Services/SignUpServices";
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext'; // Import the useAuth hook
+import { useAuth } from '../context/AuthContext'; 
 import "./Login.css";
 import KLN1 from '../Images/KLN1.jpeg';
 import KLN5 from '../Images/KLN5.jpeg';
@@ -33,6 +33,7 @@ const Login = () => {
       if (matchedSignUp) {
         setMessage("");
         logIn(matchedSignUp.firstName); 
+        alert("Successfully logged in!"); 
         navigate("/home");
       } else {
         setMessage("Incorrect email or password.");

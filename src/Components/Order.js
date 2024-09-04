@@ -3,6 +3,7 @@ import { getAllItems } from '../Services/FoodItemServices';
 import { addOrder } from '../Services/OrdersServices';
 import { useNavigate } from 'react-router-dom';
 
+
 const Order = () => {
   const [foodItems, setFoodItems] = useState([]);
   const [orderItems, setOrderItems] = useState({});
@@ -15,7 +16,6 @@ const Order = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
-
   const getCurrentDate = () => {
     const today = new Date();
     const formattedDate = today.toISOString().substr(0, 10);
@@ -24,13 +24,12 @@ const Order = () => {
 
   useEffect(() => {
     fetchFoodItems();
-    
     setDate(getCurrentDate());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    calculateTotalAmount(); 
+    calculateTotalAmount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderItems]);
 
@@ -127,7 +126,7 @@ const Order = () => {
           orderedItems: validOrderItems,
           totalBillAmount
         }
-      }); 
+      });
       setOrderItems({});
       setCustomerName('');
       setMobileNumber('');
@@ -157,48 +156,50 @@ const Order = () => {
           {mobileNumberError && <div className="text-danger">{mobileNumberError}</div>}
         </div>
       </div>
-      <table className='table table-striped table-bordered'>
-        <thead>
-          <tr>
-            <th>Item ID</th>
-            <th>Item Name</th>
-            <th>Price</th>
-            <th>Central GST</th>
-            <th>State GST</th>
-            <th>Total GST</th>
-            <th>Price with GST</th>
-            <th>Description</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {foodItems.map((foodItem) => (
-            <tr key={foodItem.itemId}>
-              <td>{foodItem.itemId}</td>
-              <td>{foodItem.itemName}</td>
-              <td>{foodItem.price}</td>
-              <td>{foodItem.centralGST}</td>
-              <td>{foodItem.stateGST}</td>
-              <td>{foodItem.totalGST}</td>
-              <td>{foodItem.priceWithGST}</td>
-              <td>{foodItem.description}</td>
-
-              <td>
-                {orderItems[foodItem.itemId] && orderItems[foodItem.itemId].quantity > 0 ? (
-                  <div className="btn-group">
-                    <button className="btn btn-sm btn-success" onClick={() => handleRemoveFromOrder(foodItem.itemId)}>-</button>
-                    <span className="btn btn-sm btn-light">{orderItems[foodItem.itemId].quantity}</span>
-                    <button className="btn btn-sm btn-success" onClick={() => handleAddToOrder(foodItem.itemId)}>+</button>
-                  </div>
-                ) : (
-                  <button className="btn btn-primary" onClick={() => handleAddToOrder(foodItem.itemId)} style={{ marginRight: '10px' }}>Add</button>
-                )}
-              </td>
+      <div className="table-wrapper">
+        <table className='table table-striped table-bordered'>
+          <thead>
+            <tr>
+              <th>Item ID</th>
+              <th>Item Name</th>
+              <th>Price</th>
+              <th>Central GST</th>
+              <th>State GST</th>
+              <th>Total GST</th>
+              <th>Price with GST</th>
+              <th>Description</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="text-center">
+          </thead>
+          <tbody>
+            {foodItems.map((foodItem) => (
+              <tr key={foodItem.itemId}>
+                <td>{foodItem.itemId}</td>
+                <td>{foodItem.itemName}</td>
+                <td>{foodItem.price}</td>
+                <td>{foodItem.centralGST}</td>
+                <td>{foodItem.stateGST}</td>
+                <td>{foodItem.totalGST}</td>
+                <td>{foodItem.priceWithGST}</td>
+                <td>{foodItem.description}</td>
+
+                <td>
+                  {orderItems[foodItem.itemId] && orderItems[foodItem.itemId].quantity > 0 ? (
+                    <div className="btn-group">
+                      <button className="btn btn-sm btn-success" onClick={() => handleRemoveFromOrder(foodItem.itemId)}>-</button>
+                      <span className="btn btn-sm btn-light">{orderItems[foodItem.itemId].quantity}</span>
+                      <button className="btn btn-sm btn-success" onClick={() => handleAddToOrder(foodItem.itemId)}>+</button>
+                    </div>
+                  ) : (
+                    <button className="btn btn-primary" onClick={() => handleAddToOrder(foodItem.itemId)} style={{ marginRight: '10px' }}>Add</button>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="button-wrapper">
         <button className="btn btn-primary" onClick={handlePlaceOrder}>
           Place Order
         </button>
@@ -216,6 +217,8 @@ const Order = () => {
 };
 
 export default Order;
+
+
 
 
 

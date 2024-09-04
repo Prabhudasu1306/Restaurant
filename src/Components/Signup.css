@@ -1,4 +1,4 @@
-/* Signup Container */
+
 .signup-container {
   width: 400px;
   margin: 50px auto;
@@ -12,43 +12,42 @@
 .signup-container h5 {
   margin-bottom: 20px;
   font-size: 24px;
-  text-align: center; /* Center align header */
+  text-align: center; 
 }
 
-/* Form layout */
 .signup-container form {
   display: flex;
   flex-direction: column;
 }
 
-/* Form field layout */
+
 .signup-container form div {
   display: flex;
-  align-items: center; /* Align items vertically centered */
+  align-items: center; 
   margin-bottom: 15px;
 }
 
-/* Labels */
+
 .signup-container label {
-  width: 100px; /* Fixed width for labels */
+  width: 100px; 
   font-weight: bold;
-  text-align: left; /* Align text to the right */
-  margin-right: 20px; /* Space between label and input */
+  text-align: left; 
+  margin-right: 20px; 
 }
 
-/* Input fields */
+
 .signup-container input {
-  flex: 1; /* Takes up remaining space */
+  flex: 1;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
-/* Buttons */
+
 .signup-container button {
   background-color: blue;
   color: white;
-  margin-right: 20px; /* Space between buttons */
+  margin-right: 20px; 
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -57,10 +56,10 @@
 
 .signup-container .button-group {
   display: flex;
-  justify-content: flex-end; /* Align buttons to the right */
+  justify-content: flex-end; 
   margin-top: 15px;
-  margin-right: 20px; /* Adjust to move the buttons further to the right */
-  padding-right: 10px; /* Additional padding to shift buttons right */
+  margin-right: 20px; 
+  padding-right: 10px; 
 }
 
 .signup-container button:last-child {
@@ -72,7 +71,7 @@
   opacity: 0.8;
 }
 
-/* Error messages */
+
 .signup-container p {
   color: red;
   margin-top: 10px;

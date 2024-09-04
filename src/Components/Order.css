@@ -1,0 +1,18 @@
+.container {
+    max-width: 100%;
+    overflow-x: auto; /* Horizontal scrolling for wide tables */
+    padding: 20px; /* Optional padding */
+  }
+  
+  .table-wrapper {
+    max-height: 500px; /* Set a fixed height for vertical scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin: 20px 0;
+    border: 1px solid #ddd; /* Optional border */
+  }
+  
+  .table {
+    width: 100%;
+    min-width: 1000px; /* Set a minimum width for horizontal scrolling */
+  }
+  
