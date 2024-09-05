@@ -1,7 +1,6 @@
 import React from 'react';
 import KLN1 from '../Images/KLN1.jpeg'; 
-
-
+import "./Home.css"
 const Home = () => {
   return (
     <div className="home-container">

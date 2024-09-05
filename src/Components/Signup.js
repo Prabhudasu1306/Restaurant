@@ -47,7 +47,7 @@ const Signup = () => {
    
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     if (!passwordRegex.test(password)) {
-      setError("Please provide a strong password. It should be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      setError("Please provide a strong password. It should be at least 8 characters,at least one uppercase letter, one lowercase letter, one number, and one special character.");
       return;
     }
 
