@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { getAllSignUp } from "../Services/SignUpServices";
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +6,9 @@ import "./Login.css";
 import KLN1 from '../Images/KLN1.jpeg';
 import KLN5 from '../Images/KLN5.jpeg';
 import KLN from '../Images/KLN.jpeg';
+import Biryani from '../Images/Biryani.jpg';
+import Tiffin from '../Images/Tffin.jpg';
+import Veg from '../Images/veg.jpg'
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -33,7 +35,7 @@ const Login = () => {
       if (matchedSignUp) {
         setMessage("");
         logIn(matchedSignUp.firstName); 
-        alert("Successfully logged in!"); 
+         
         navigate("/home");
       } else {
         setMessage("Incorrect email or password.");
@@ -54,56 +56,74 @@ const Login = () => {
 
   return (
     <div className="page-container">
-      <div className="login-container">
-        <h2>Login</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setMessage("");
-              }}
-              required
-            />
-          </div>
-          <div>
-            <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setMessage("");
-              }}
-              required
-            />
-          </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <button
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
-            <button
-              type="button"
-              onClick={handleClear}
-            >
-              Clear
-            </button>
-          </div>
-          {message && <p>{message}</p>}
-          <p>New member? <Link to="/signup">Signup</Link></p>
-        </form>
+      <div className="left-container">
+        <div className="round-link">
+          <Link to="/biryani">
+            <img src={Biryani} alt="Biryani" />
+            <p><b>Biryani</b></p>
+          </Link>
+        </div>
+        <div className="round-link">
+          <Link to="/veg">
+            <img src={Tiffin} alt="Veg" />
+            <p><b>Tiffins</b></p>
+          </Link>
+        </div>
+        <div className="round-link">
+          <Link to="/tiffin">
+            <img src={Veg} alt="Tiffin" />
+            <p><b>Veg</b></p>
+          </Link>
+        </div>
       </div>
-      <div className="image-container">
-        <div className="image-container-inner">
-          <img src={KLN5} alt="KLN5" />
-          <img src={KLN1} alt="KLN1" />
-          <img src={KLN} alt="KLN" />
+      <div className="center-container">
+        <div className="login-container">
+          <h2>Login</h2>
+          <form onSubmit={handleLogin}>
+            <div>
+              <label>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setMessage("");
+                }}
+                required
+              />
+            </div>
+            <div>
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setMessage("");
+                }}
+                required
+              />
+            </div>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button type="submit" disabled={loading}>
+                {loading ? "Logging in..." : "Login"}
+              </button>
+              <button type="button" onClick={handleClear}>
+                Clear
+              </button>
+            </div>
+            {message && <p className="error-message">{message}</p>}
+            <p>New member? <Link to="/signup">Signup</Link></p>
+          </form>
+        </div>
+      </div>
+      <div className="right-container">
+        <div className="image-container">
+          <div className="image-container-inner">
+            <img src={KLN5} alt="KLN5" />
+            <img src={KLN1} alt="KLN1" />
+            <img src={KLN} alt="KLN" />
+          </div>
         </div>
       </div>
     </div>

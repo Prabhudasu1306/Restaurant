@@ -14,6 +14,11 @@ import Hotel from './Hotel';
 import Export from './Export';
 import FileUpload from './FileUpload';
 
+// Import Biryani, Veg, and Tiffin components
+import Biryani from './Biryani';
+import Veg from './Tiffins';
+import Tiffin from './Veg';
+
 const NavbarCom = () => {
   const { user, logOut } = useAuth();
   const navigate = useNavigate();
@@ -77,6 +82,10 @@ const NavbarCom = () => {
         <Route path="/hotel/:billId" element={<Hotel />} />
         <Route path="/Export" element={<Export />} />
         <Route path="/FileUpload" element={<FileUpload />} />
+
+        <Route path="/biryani" element={<Biryani />} />
+        <Route path="/veg" element={<Veg />} />
+        <Route path="/tiffin" element={<Tiffin />} />
       </Routes>
     </div>
   );
